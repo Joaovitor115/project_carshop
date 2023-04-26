@@ -33,4 +33,18 @@ export default class CarsController {
       this.next(error);
     }
   }
+
+  public async find() {
+    const car = await this.service.find();
+    return this.res.status(200).json(car);
+  }
+
+  public async findById() {
+    const { id } = this.req.params;
+    const { message, status, data } = await this.service.findById(id);
+    if (message) {
+      return this.res.status(status).json({ message });
+    }
+    return this.res.status(status).json(data);
+  }
 }
