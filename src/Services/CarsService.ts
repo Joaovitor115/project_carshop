@@ -22,7 +22,11 @@ export default class CarsService {
 
   public async create(car: ICar) {
     const carsODM = new CarsODM();
-    const newCar = await carsODM.create(car);
+    if (!car.status) {
+      const newCar = await carsODM.create({ ...car, status: false });
+      return this.createCarDomain(newCar);
+    }
+    const newCar = await carsODM.create({ ...car });
     return this.createCarDomain(newCar);
   }
 

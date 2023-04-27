@@ -13,7 +13,9 @@ export default class MotorcyclesService {
           id: motorcycle.id,
           status: motorcycle.status,
           buyValue: motorcycle.buyValue,
-          engineCapacity: motorcycle.engineCapacity },
+          engineCapacity: motorcycle.engineCapacity,
+          category: motorcycle.category,
+        },
       );
     }
     return null;
@@ -21,7 +23,11 @@ export default class MotorcyclesService {
 
   public async create(motorcycle: IMotorcycle) {
     const motorcyclesODM = new MotorcycleODM();
-    const newMotorcycle = await motorcyclesODM.create(motorcycle);
+    if (!motorcycle.status) {
+      const newMotorcycle = await motorcyclesODM.create({ ...motorcycle, status: false });
+      return this.createMotorcycleDomain(newMotorcycle);
+    }
+    const newMotorcycle = await motorcyclesODM.create({ ...motorcycle });
     return this.createMotorcycleDomain(newMotorcycle);
   }
 
@@ -39,7 +45,7 @@ export default class MotorcyclesService {
     const motorcyclesODM = new MotorcycleODM();
     const motorcycle = await motorcyclesODM.findById(id);
     if (!motorcycle) {
-      return { status: 404, message: 'motorcycle not found' };
+      return { status: 404, message: 'Motorcycle not found' };
     }
     const data = this.createMotorcycleDomain(motorcycle);
     return { data, status: 200 };

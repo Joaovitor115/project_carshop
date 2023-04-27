@@ -22,7 +22,8 @@ export default class MotorcycleController {
       color: this.req.body.color,
       status: this.req.body.status,
       buyValue: this.req.body.buyValue,
-      engineCapacity: this.req.body.doorsQty,
+      engineCapacity: this.req.body.engineCapacity,
+      category: this.req.body.category,
     };
 
     try {
